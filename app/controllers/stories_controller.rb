@@ -1,9 +1,30 @@
+require 'open-uri'
+
 class StoriesController < ApplicationController
   before_action :set_story, only: [:show, :update, :destroy]
 
   # GET /stores/scrape
   # scrapes wikipedia page
   def scrape
+    webpage = open("https://en.wikipedia.org/wiki/Template:In_the_news")
+    doc = Nokogiri::HTML(webpage)
+    # stories = doc.css("#mw-content-text > ul > li")
+    ongoings = doc.css("#mw-content-text ul li .inline ul") # first is ongoing # second is recent deaths
+    puts ongoings
+    # binding.pry
+
+    # grab the ongoings
+    ongoings.first.children.each do |ongoing|
+      # save the stories
+      s = Story.create(headline: ongoing, ongoing: true)
+      # grab the links
+      ongoing.children.each do |link|
+        # save the links
+        Link.create(title: link.text, url: link.attr(:href), story: s)
+      end
+    end
+
+    render plain: "OK"
   end
 
   # GET /stories
