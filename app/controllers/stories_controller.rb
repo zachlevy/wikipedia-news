@@ -1,6 +1,11 @@
 class StoriesController < ApplicationController
   before_action :set_story, only: [:show, :update, :destroy]
 
+  # GET /stores/scrape
+  # scrapes wikipedia page
+  def scrape
+  end
+
   # GET /stories
   def index
     @stories = Story.all
