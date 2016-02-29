@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229002726) do
+ActiveRecord::Schema.define(version: 20160229003333) do
+
+  create_table "links", force: :cascade do |t|
+    t.string   "title"
+    t.string   "url"
+    t.integer  "story_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["story_id"], name: "index_links_on_story_id"
+  end
 
   create_table "stories", force: :cascade do |t|
     t.string   "headline"
